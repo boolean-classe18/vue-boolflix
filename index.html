@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+    <head>
+        <meta charset="utf-8">
+        <title>Vue - Boolflix</title>
+        <!-- <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.1/css/all.css" integrity="sha384-vp86vTRFVJgpjF9jiIGPEEqYqlDwgyBgEF109VFjmqGmIY/Y4HV4d3Gp2irVfcrp" crossorigin="anonymous"> -->
+        <link rel="preconnect" href="https://fonts.gstatic.com">
+        <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="style.css">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.20.0/axios.min.js" charset="utf-8"></script>
+        <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+    </head>
+    <body>
+
+        <div id="root">
+
+            <header>
+                <div class="header-left">
+                    <h1>BOOLFLIX</h1>
+                </div>
+                <div class="header-right">
+                    <input type="text" class="input-ricerca" @keyup.enter="ricerca"
+                    placeholder="Inizia a cercare..." v-model="testo_ricerca">
+                    <button class="bottone-ricerca" @click="ricerca">
+                        Cerca
+                    </button>
+                </div>
+            </header>
+
+            <div class="container" id="risultati-wrapper">
+
+                <h2 v-if="ricerca_in_corso">
+                    Ricerca in corso...
+                </h2>
+
+                <h2 v-else-if="testo_titolo && risultati.length">
+                    Risultati ricerca per: "{{ testo_titolo }}"
+                </h2>
+
+                <h2 v-else-if="testo_titolo">
+                    Nessun risultato trovato per la ricerca "{{ testo_titolo }}"
+                </h2>
+
+                <ul class="card" v-for="risultato in risultati">
+                    <li>{{ risultato.title }}</li>
+                    <li>{{ risultato.original_title }}</li>
+                    <li>{{ risultato.original_language }}</li>
+                    <li>{{ risultato.vote_average }}</li>
+                </ul>
+
+            </div>
+
+        </div>
+
+        <script src="main.js" charset="utf-8"></script>
+    </body>
+</html>
