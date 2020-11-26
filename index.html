@@ -3,7 +3,7 @@
     <head>
         <meta charset="utf-8">
         <title>Vue - Boolflix</title>
-        <!-- <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.1/css/all.css" integrity="sha384-vp86vTRFVJgpjF9jiIGPEEqYqlDwgyBgEF109VFjmqGmIY/Y4HV4d3Gp2irVfcrp" crossorigin="anonymous"> -->
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.1/css/all.css" integrity="sha384-vp86vTRFVJgpjF9jiIGPEEqYqlDwgyBgEF109VFjmqGmIY/Y4HV4d3Gp2irVfcrp" crossorigin="anonymous">
         <link rel="preconnect" href="https://fonts.gstatic.com">
         <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap" rel="stylesheet">
         <link rel="stylesheet" href="style.css">
@@ -42,10 +42,28 @@
                 </h2>
 
                 <ul class="card" v-for="risultato in risultati">
-                    <li>{{ risultato.title }}</li>
-                    <li>{{ risultato.original_title }}</li>
-                    <li>{{ risultato.original_language }}</li>
-                    <li>{{ risultato.vote_average }}</li>
+                    <li>
+                        {{ risultato.title ? risultato.title : risultato.name }}
+                    </li>
+
+                    <li>
+                        {{ risultato.original_title ? risultato.original_title : risultato.original_name }}
+                    </li>
+
+                    <li v-if="bandiere_disponibili.includes(risultato.original_language)">
+                        <img :alt="risultato.original_language"
+                            :src="get_url_bandiera(risultato.original_language)">
+                    </li>
+                    <li v-else>{{ risultato.original_language }}</li>
+
+                    <li v-if="risultato.vote_average > 0">
+                        <i v-for="i in get_numero_stelle(risultato.vote_average)"
+                            class="fas fa-star"></i>
+                        <i v-for="i in (5 - get_numero_stelle(risultato.vote_average))"
+                            class="far fa-star"></i>
+                    </li>
+                    <li v-else>n.d.</li>
+
                 </ul>
 
             </div>

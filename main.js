@@ -7,7 +7,8 @@ var app = new Vue({
         risultati: [],
         testo_ricerca: '',
         testo_titolo: '',
-        ricerca_in_corso: false
+        ricerca_in_corso: false,
+        bandiere_disponibili: ['it', 'en']
     },
     methods: {
         ricerca() {
@@ -23,19 +24,36 @@ var app = new Vue({
                 // inserisco il testo ricercato nel titolo
                 this.testo_titolo = testo_utente;
 
-                // faccio partire la chiamata ajax a tmdb
-                axios.get(api_url_base + 'search/movie', {
+                let parametri = {
                     params: {
                         api_key: api_key,
                         query: testo_utente
                     }
-                }).then((risposta) => {
-                    console.log(risposta.data.results);
-                    this.risultati = risposta.data.results;
+                };
+
+                // faccio partire la chiamata ajax a tmdb per recuperare i film
+                axios.get(api_url_base + 'search/movie', parametri)
+                    .then((risposta) => {
+                    // console.log(risposta.data.results);
+                    this.risultati = this.risultati.concat(risposta.data.results);
+                    this.ricerca_in_corso = false;
+                });
+
+                // faccio partire la chiamata ajax a tmdb per recuperare le serie tv
+                axios.get(api_url_base + 'search/tv', parametri)
+                    .then((risposta) => {
+                    // console.log(risposta.data.results);
+                    this.risultati = this.risultati.concat(risposta.data.results);
                     this.ricerca_in_corso = false;
                 });
 
             }
+        },
+        get_numero_stelle(voto) {
+            return Math.ceil(voto / 2);
+        },
+        get_url_bandiera(lingua) {
+            return 'flags/' + lingua + '.png';
         }
     },
     mounted() {
