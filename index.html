@@ -41,30 +41,42 @@
                     Nessun risultato trovato per la ricerca "{{ testo_titolo }}"
                 </h2>
 
-                <ul class="card" v-for="risultato in risultati">
-                    <li>
-                        {{ risultato.title ? risultato.title : risultato.name }}
-                    </li>
+                <div class="card" v-for="risultato in risultati">
+                    <div class="card-inner">
+                        <div class="card-front">
+                            <img :src="get_url_locandina(risultato.poster_path)"
+                            :alt="risultato.title ? risultato.title : risultato.name">
+                        </div>
+                        <div class="card-back">
+                            <ul>
+                                <li>
+                                    {{ risultato.title ? risultato.title : risultato.name }}
+                                </li>
 
-                    <li>
-                        {{ risultato.original_title ? risultato.original_title : risultato.original_name }}
-                    </li>
+                                <li>
+                                    {{ risultato.original_title ? risultato.original_title : risultato.original_name }}
+                                </li>
 
-                    <li v-if="bandiere_disponibili.includes(risultato.original_language)">
-                        <img :alt="risultato.original_language"
-                            :src="get_url_bandiera(risultato.original_language)">
-                    </li>
-                    <li v-else>{{ risultato.original_language }}</li>
+                                <li v-if="bandiere_disponibili.includes(risultato.original_language)">
+                                    <img class="bandiera"
+                                        :alt="risultato.original_language"
+                                        :src="get_url_bandiera(risultato.original_language)">
+                                </li>
+                                <li v-else>{{ risultato.original_language }}</li>
 
-                    <li v-if="risultato.vote_average > 0">
-                        <i v-for="i in get_numero_stelle(risultato.vote_average)"
-                            class="fas fa-star"></i>
-                        <i v-for="i in (5 - get_numero_stelle(risultato.vote_average))"
-                            class="far fa-star"></i>
-                    </li>
-                    <li v-else>n.d.</li>
+                                <li v-if="risultato.vote_average > 0">
+                                    <i v-for="i in get_numero_stelle(risultato.vote_average)"
+                                        class="fas fa-star"></i>
+                                    <i v-for="i in (5 - get_numero_stelle(risultato.vote_average))"
+                                        class="far fa-star"></i>
+                                </li>
+                                <li v-else>n.d.</li>
 
-                </ul>
+                                <li>{{ risultato.overview }}</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
 
             </div>
 
